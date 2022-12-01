@@ -2,7 +2,7 @@ import aocd
 import pytest
 
 
-def main(lines: list[str]) -> int:
+def part1(lines: list[str]) -> int:
     largest_total = 0
     for group_sum in _summed_groups(lines):
         largest_total = max(largest_total, group_sum)
@@ -22,11 +22,17 @@ def _groups(lines):
         else:
             yield values
             values = []
+
     if values:
         yield values
 
 
-class TestMain:
+def part2(lines: list[str]) -> int:
+    sorted_totals = sorted(list(_summed_groups(lines)), reverse=True)
+    return sum(sorted_totals[:3])
+
+
+class TestPart1:
     @pytest.mark.parametrize(
         "lines, result, scenario",
         [
@@ -53,7 +59,37 @@ class TestMain:
         ],
     )
     def test_scenario(self, lines, result, scenario):
-        assert main(lines) == result, scenario
+        assert part1(lines) == result, scenario
+
+
+class TestPart2:
+    @pytest.mark.parametrize(
+        "lines, result, scenario",
+        [
+            (
+                [
+                    "1000",
+                    "2000",
+                    "3000",
+                    "",
+                    "4000",
+                    "",
+                    "5000",
+                    "6000",
+                    "",
+                    "7000",
+                    "8000",
+                    "9000",
+                    "",
+                    "10000",
+                ],
+                45000,
+                "example",
+            ),
+        ],
+    )
+    def test_scenario(self, lines, result, scenario):
+        assert part2(lines) == result, scenario
 
 
 if __name__ == "__main__":
@@ -62,4 +98,5 @@ if __name__ == "__main__":
     assert exit_code == 0
 
     # Run with real data (inferred from filename).
-    print(main(aocd.lines))
+    print(part1(aocd.lines))
+    print(part2(aocd.lines))

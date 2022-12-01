@@ -1,3 +1,5 @@
+from typing import Iterator
+
 import aocd
 import pytest
 
@@ -9,12 +11,12 @@ def part1(lines: list[str]) -> int:
     return largest_total
 
 
-def _summed_groups(lines):
+def _summed_groups(lines: list[str]) -> Iterator[int]:
     for group in _groups(lines):
         yield sum(group)
 
 
-def _groups(lines):
+def _groups(lines: list[str]) -> Iterator[list[int]]:
     values = []
     for line in lines:
         if line:
@@ -32,27 +34,30 @@ def part2(lines: list[str]) -> int:
     return sum(sorted_totals[:3])
 
 
+EXAMPLE_DATA = [
+    "1000",
+    "2000",
+    "3000",
+    "",
+    "4000",
+    "",
+    "5000",
+    "6000",
+    "",
+    "7000",
+    "8000",
+    "9000",
+    "",
+    "10000",
+]
+
+
 class TestPart1:
     @pytest.mark.parametrize(
         "lines, result, scenario",
         [
             (
-                [
-                    "1000",
-                    "2000",
-                    "3000",
-                    "",
-                    "4000",
-                    "",
-                    "5000",
-                    "6000",
-                    "",
-                    "7000",
-                    "8000",
-                    "9000",
-                    "",
-                    "10000",
-                ],
+                EXAMPLE_DATA,
                 24000,
                 "example",
             ),
@@ -67,22 +72,7 @@ class TestPart2:
         "lines, result, scenario",
         [
             (
-                [
-                    "1000",
-                    "2000",
-                    "3000",
-                    "",
-                    "4000",
-                    "",
-                    "5000",
-                    "6000",
-                    "",
-                    "7000",
-                    "8000",
-                    "9000",
-                    "",
-                    "10000",
-                ],
+                EXAMPLE_DATA,
                 45000,
                 "example",
             ),
@@ -94,8 +84,7 @@ class TestPart2:
 
 if __name__ == "__main__":
     # Run tests
-    exit_code = pytest.main([__file__])
-    assert exit_code == 0
+    assert pytest.main([__file__]) == 0
 
     # Run with real data (inferred from filename).
     print(part1(aocd.lines))
